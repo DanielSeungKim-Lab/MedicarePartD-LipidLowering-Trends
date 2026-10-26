@@ -1,0 +1,79 @@
+DATA DICTIONARY
+
+DATA-01-oop-panel-2013-2024.csv
+  114 rows, one per lipid-lowering class and year, 2013 to 2024. National rows of
+  the CMS Medicare Part D Prescribers by Geography and Drug annual public use files.
+    year                      calendar year
+    agent_class               lipid-lowering class, 11 values
+    tier                      working label grouping classes by cost per fill; unused
+    fills                     standardized 30-day fill count, fractional because CMS
+                              standardizes days supply to 30-day equivalents
+    benes                     beneficiaries with at least one fill
+    spend                     gross spending, US dollars, all payers combined
+    lis_oop                   beneficiary cost sharing among enrollees receiving the
+                              low-income subsidy (LIS_Bene_Cst_Shr)
+    nonlis_oop                beneficiary cost sharing among enrollees not receiving
+                              the subsidy (NonLIS_Bene_Cst_Shr)
+    tot_oop_per_fill          (lis_oop + nonlis_oop) / fills, pooled across groups
+    pct_oop_borne_by_nonLIS   100 * nonlis_oop / (lis_oop + nonlis_oop)
+
+  Class labels, panel value to manuscript label:
+    PCSK9 monoclonal              PCSK9 mAb
+    Inclisiran (siRNA)            Inclisiran
+    Bempedoic acid                Bempedoic acid
+    Icosapent ethyl               Icosapent ethyl
+    Niacin (Rx)                   Niacin
+    Ezetimibe (alone)             Ezetimibe
+    Fibrate                       Fibrate
+    Statin (incl. combinations)   Statin (including combinations)
+
+  Present in the panel but not reported in the letter: Bile acid sequestrant,
+  Prescription omega-3 (other), Other orphan (ANGPTL3/MTP/ASO).
+
+  Inclisiran first appears in 2021 and bempedoic acid in 2020, so those classes
+  present in each year.
+
+DATA-02-lis-enrollment-2013-2025.csv
+  Part D enrollment by subsidy status, from the CMS Medicare Monthly Enrollment file.
+    year        calendar year
+    total       Part D enrollees
+    lis         enrollees receiving the low-income subsidy
+    no_lis      enrollees not receiving it
+    resid       total minus (lis + no_lis); zero or one in every year
+    pct_lis, pct_no_lis   percentages of total
+
+DATA-03-national-series-2013-2024.csv
+  National utilization series by class and year: beneficiaries, fills, claims,
+  gross spending, prescribers, enrollees and users per 1000. Supplies context for
+  the trend panel; no reported value depends on it.
+    partd_enrollees  sum of the state rows of the enrollment file, which omits a
+                     small residual CMS does not assign to a state. It is
+                     therefore 11 to 239 lower than DATA-02 total, which is the
+                     National row. DATA-02 is the denominator used for every
+                     reported ratio.
+
+  The manuscript Table. Carries one extra column, beneficiary_share_of_gross_pct,
+  which is derived here but is not reported in the letter and is not checked
+  against a printed value.
+
+  One row per reported value: quantity, the figure as printed, the figure
+  recomputed from DATA-01 and DATA-02, the tolerance, and PASS or FAIL.
+
+DATA-04-alldrug-national-2013-2024.csv
+  Every national row of the Medicare Part D Prescribers by Geography and Drug
+  file for each year, all drugs. Columns are the CMS field names: Gnrc_Name,
+  Brnd_Name, Tot_30day_Fills, Tot_Clms, Tot_Benes (suppressed below 11),
+  Tot_Drug_Cst, LIS_Bene_Cst_Shr, NonLIS_Bene_Cst_Shr, plus year. Comparator
+  classes in CODE-03 are defined by generic-name substrings listed in that file.
+
+DATA-05-cpi-u-annual-2013-2024.csv
+  year; cpi_u_annual_avg (BLS CPI-U, all items, U.S. city average, not
+  seasonally adjusted, annual average, series CUUR0000SA0); cpi_source.
+
+DATA-06-partb-inclisiran-2022-2024.csv
+  Inclisiran (HCPCS J1306) from the CMS Medicare Part B Spending by Drug file
+  (fee-for-service beneficiaries only; no cost-sharing or subsidy fields):
+  partb_total_spending, partb_claims, partb_beneficiaries and derived averages,
+  beside the Part D totals for inclisiran from DATA-01 for the same years.
+  Part B and Part D cover different populations, so the ratio is a comparison
+  of spending captured in the two public files, not a Medicare-wide share.
